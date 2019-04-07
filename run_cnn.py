@@ -11,6 +11,8 @@ from datetime import timedelta
 import numpy as np
 import tensorflow as tf
 from sklearn import metrics
+from matplotlib import pyplot as plt 
+import matplotlib
 
 from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
@@ -24,6 +26,9 @@ vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 
+xx=[]
+yy1=[]
+yy2=[]
 
 def get_time_dif(start_time):
     """获取已使用时间"""
@@ -111,7 +116,9 @@ def train():
                 feed_dict[model.keep_prob] = 1.0
                 loss_train, acc_train = session.run([model.loss, model.acc], feed_dict=feed_dict)
                 loss_val, acc_val = evaluate(session, x_val, y_val)  # todo
-
+                xx.append(total_batch)
+                yy1.append(loss_train)
+                yy2.append(loss_val)
                 if acc_val > best_acc_val:
                     # 保存最好结果
                     best_acc_val = acc_val
@@ -195,6 +202,10 @@ if __name__ == '__main__':
     model = TextCNN(config)
     train()
     test()
+    plt.plot(xx, yy1)
+    plt.show()
+    plt.plot(xx, yy2)
+    plt.show()
     # if sys.argv[1] == 'train':
     #     train()
     # else:
