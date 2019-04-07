@@ -2,7 +2,7 @@
 
 import sys
 from collections import Counter
-
+import jieba
 import numpy as np
 import tensorflow.contrib.keras as kr
 
@@ -48,7 +48,7 @@ def read_file(filename):
             try:
                 label, content = line.strip().split('\t')
                 if content:
-                    contents.append(list(native_content(content)))
+                    contents.append(list(jieba.cut(native_content(content))))
                     labels.append(native_content(label))
             except:
                 pass
@@ -83,7 +83,8 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    categories = ['体育', '财经', '房产', '家居', '教育', '科技', '时尚', '时政', '游戏', '娱乐']
+    categories = ['房屋拆迁管理(拆迁)', '工商行政管理(工商)', '治安管理(治安)', '房屋登记管理(房屋登记)',
+                  '劳动和社会保障行政管理(劳动、社会保障)','道路交通管理(道路)']
 
     categories = [native_content(x) for x in categories]
 
