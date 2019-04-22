@@ -84,8 +84,8 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    categories = ['房屋拆迁管理(拆迁)', '工商行政管理(工商)', '治安管理(治安)', '房屋登记管理(房屋登记)',
-                  '劳动和社会保障行政管理(劳动、社会保障)','道路交通管理(道路)']
+    categories = ['判决', '准予撤诉', '调理', '按撤诉处理',
+                  '驳回起诉','裁定移送其它法院','不予受理']
 
     categories = [native_content(x) for x in categories]
 
