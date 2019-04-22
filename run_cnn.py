@@ -29,6 +29,8 @@ save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保�
 xx=[]
 yy1=[]
 yy2=[]
+yy_train=[]
+yy_val=[]
 
 def get_time_dif(start_time):
     """获取已使用时间"""
@@ -117,6 +119,8 @@ def train():
                 loss_train, acc_train = session.run([model.loss, model.acc], feed_dict=feed_dict)
                 loss_val, acc_val = evaluate(session, x_val, y_val)  # todo
                 xx.append(total_batch)
+                yy_train.append(acc_train)
+                yy_val.append(acc_val)
                 yy1.append(loss_train)
                 yy2.append(loss_val)
                 if acc_val > best_acc_val:
