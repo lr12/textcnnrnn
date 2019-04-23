@@ -7,7 +7,7 @@ class TRNNConfig(object):
     """RNN配置参数"""
 
     # 模型参数
-    embedding_dim = 256      # 词向量维度
+    embedding_dim = 128      # 词向量维度
     seq_length = 600        # 序列长度
     num_classes = 8        # 类别数
     vocab_size = 5000       # 词汇表达小

@@ -21,7 +21,7 @@ class TCNNConfig(object):
     batch_size = 256  # 每批训练大小
     num_epochs = 13 # 总迭代轮次
 
-    print_per_batch = 3  # 每多少轮输出一次结果
+    print_per_batch = 30   # 每多少轮输出一次结果
     save_per_batch = 5  # 每多少轮存入tensorboard
 
 
