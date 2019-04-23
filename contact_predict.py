@@ -6,17 +6,12 @@ import os
 import tensorflow as tf
 import tensorflow.contrib.keras as kr
 
-from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_category, read_vocab
-from  rnn_model import  TRNNConfig,TextRNN
-from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
-from __future__ import print_function
+from  rnn_model import  TRNNConfig,TextRNN
+
 
 import os
-import sys
-import time
-from datetime import timedelta
+
 
 import numpy as np
 import tensorflow as tf
