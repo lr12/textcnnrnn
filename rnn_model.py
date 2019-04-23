@@ -22,7 +22,7 @@ class TRNNConfig(object):
     batch_size = 128        # 每批训练大小
     num_epochs = 10          # 总迭代轮次
 
-    print_per_batch = 100    # 每多少轮输出一次结果
+    print_per_batch = 50    # 每多少轮输出一次结果
     save_per_batch = 10      # 每多少轮存入tensorboard
 
 
