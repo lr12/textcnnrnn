@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 import matplotlib
 
 from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
+from data.cnews_loader import read_vocab, read_category, open_file
 
 
 try:
@@ -32,12 +32,12 @@ base_dir = 'data/cnews'
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
 train_dir = os.path.join(base_dir, 'cnews.train.txt')
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
-val_dir = os.path.join(base_dir, 'cnews.val.txt')
+
 
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
-save_dir = 'checkpoints/textrnn'
-save_path1 = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
+save_dir1 = 'checkpoints/textrnn'
+save_path1 = os.path.join(save_dir1, 'best_validation')  # 最佳验证结果保存路径
 
 class CnnModel:
     def __init__(self):
@@ -79,6 +79,7 @@ class RnnModel:
         saver = tf.train.Saver()
         saver.restore(sess=self.session, save_path=save_path1)  # 读取保存的模型
 
+
     def predict(self, message):
         # 支持不论在python2还是python3下训练的模型都可以在2或者3的环境下运行
         content = unicode(message)
@@ -93,26 +94,38 @@ class RnnModel:
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
         return self.categories[y_pred_cls[0]],pred_matrix
 
-def test():
-    cnn_model = CnnModel()
+def read_file1(filename):
+    """读取文件数据"""
+    contents, labels = [], []
+    with open_file(filename) as f:
+        for line in f:
+            try:
+                label, content = line.split('\t')
+                print(lable)
+                print(content)
+                if content:
+                    # contents.append(list(jieba.cut(native_content(content))))
+                    contents.append(content)
+                    labels.append(lable)
+            except:
+                pass
+    return contents, labels
 
 if __name__ == '__main__':
-
-    cnn_model = CnnModel()
-    test_demo = ['三星ST550以全新的拍摄方式超越了以往任何一款数码相机',
-                 '热火vs骑士前瞻：皇帝回乡二番战 东部次席唾手可得新浪体育讯北京时间3月30日7:00']
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
-
-    x_test, y_test = process_file(test_dir, word_to_id, cat_to_id, 5000)
-    rnn_model = RnnModel()
+    x_test, y_test = read_file1(test_dir)
+    cnn_model = CnnModel()
+    #rnn_model = RnnModel()
     lables=[]
     for i in range(len(x_test)):
         item = x_test[i]
         y = y_test[i]
         _,result_cnn=cnn_model.predict(item)
-        _, result_rnn  = rnn_model.predict(item)
-        result = result_cnn + result_rnn
+        print(result_cnn)
+      #  _y, result_rnn  = rnn_model.predict(item)
+     #   result = result_cnn + result_rnn
+        result = result_cnn
         labelId = np.argmax(result)
         lable = categories[labelId]
         lables.append(lable)
@@ -125,6 +138,5 @@ if __name__ == '__main__':
 
     cm = metrics.confusion_matrix(y_test, lables)
     print(cm)
-
 
 
