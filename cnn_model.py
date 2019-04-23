@@ -18,7 +18,7 @@ class TCNNConfig(object):
     dropout_keep_prob = 0.5  # dropout保留比例
     learning_rate = 1e-3  # 学习率
 
-    batch_size = 264  # 每批训练大小
+    batch_size = 64  # 每批训练大小
     num_epochs = 5 # 总迭代轮次
 
     print_per_batch = 20   # 每多少轮输出一次结果
