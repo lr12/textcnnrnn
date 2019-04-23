@@ -29,6 +29,8 @@ save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保�
 xx=[]
 yy1=[]
 yy2=[]
+yy3=[]
+yy4=[]
 yy_train=[]
 yy_val=[]
 
@@ -123,6 +125,7 @@ def train():
                 yy_val.append(acc_val)
                 yy1.append(loss_train)
                 yy2.append(loss_val)
+
                 if acc_val > best_acc_val:
                     # 保存最好结果
                     best_acc_val = acc_val
@@ -209,8 +212,16 @@ if __name__ == '__main__':
     train()
     test()
     plt.plot(xx, yy1)
+    plt.title('train loss')
+    plt.show()
+    plt.plot(xx, yy_train)
+    plt.title('train Acc')
     plt.show()
     plt.plot(xx, yy2)
+    plt.title('val Loss')
+    plt.show()
+    plt.plot(xx, yy_val)
+    plt.title('val Acc')
     plt.show()
     # if sys.argv[1] == 'train':
     #     train()
