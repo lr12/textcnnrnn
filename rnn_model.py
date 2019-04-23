@@ -76,7 +76,7 @@ class TextRNN(object):
             # 分类器
             self.logits = tf.layers.dense(fc, self.config.num_classes, name='fc2')
             self.y_pred_cls = tf.argmax(tf.nn.softmax(self.logits), 1)  # 预测类别
-
+            self.pred_matrix = tf.nn.softmax(self.logits)
         with tf.name_scope("optimize"):
             # 损失函数，交叉熵
             cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=self.input_y)

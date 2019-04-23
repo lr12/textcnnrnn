@@ -185,6 +185,8 @@ def test():
 
     # 混淆矩阵
     print("Confusion Matrix...")
+    print(y_test_cls)
+    print(y_pred_cls)
     cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
     print(cm)
 

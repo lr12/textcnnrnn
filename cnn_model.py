@@ -6,7 +6,7 @@ import tensorflow as tf
 class TCNNConfig(object):
     """CNN配置参数"""
 
-    embedding_dim = 256  # 词向量维度
+    embedding_dim = 32  # 词向量维度
     seq_length = 800  # 序列长度
     num_classes = 8 # 类别数
     num_filters = 256  # 卷积核数目
@@ -18,10 +18,10 @@ class TCNNConfig(object):
     dropout_keep_prob = 0.5  # dropout保留比例
     learning_rate = 1e-3  # 学习率
 
-    batch_size = 64  # 每批训练大小
-    num_epochs = 10  # 总迭代轮次
+    batch_size = 256  # 每批训练大小
+    num_epochs = 1  # 总迭代轮次
 
-    print_per_batch = 40  # 每多少轮输出一次结果
+    print_per_batch = 10  # 每多少轮输出一次结果
     save_per_batch = 5  # 每多少轮存入tensorboard
 
 
@@ -60,7 +60,7 @@ class TextCNN(object):
             # 分类器
             self.logits = tf.layers.dense(fc, self.config.num_classes, name='fc2')
             self.y_pred_cls = tf.argmax(tf.nn.softmax(self.logits), 1)  # 预测类别
-
+            self.pred_matrix= tf.nn.softmax(self.logits)
         with tf.name_scope("optimize"):
             # 损失函数，交叉熵
             cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=self.input_y)
