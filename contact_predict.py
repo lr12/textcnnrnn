@@ -130,9 +130,14 @@ if __name__ == '__main__':
         item = x_test[i]
         temp, result_cnn = cnn_model.predict(item)
         temp1, result_rnn  = rnn_model.predict(item)
+        print(result_cnn)
+        print(result_rnn)
         result = result_cnn + result_rnn
+        print(result)
         labelId = np.argmax(result)
+        print(labelId)
         lable = categories[labelId]
+        print(lable)
         lables.append(lable)
     # 评估
    # print(lables)
