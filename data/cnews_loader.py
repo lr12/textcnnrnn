@@ -48,8 +48,8 @@ def read_file(filename):
             try:
                 label, content = line.strip().split('\t')
                 if content:
-                    #contents.append(list(jieba.cut(native_content(content))))
-                    contents.append(list((native_content(content))))
+                    contents.append(list(jieba.cut(native_content(content))))
+                    #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
             except:
                 pass
@@ -84,7 +84,7 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    categories =  ['裁定移送其它法院','准予撤回上诉','维持','调理','驳回起诉','按撤诉处理']
+    categories =  ['裁定移送其它法院','准予撤回上诉','维持','调理','驳回起诉','按撤诉处理','不予立案']
 
     categories = [native_content(x) for x in categories]
 
