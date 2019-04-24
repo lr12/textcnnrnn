@@ -126,8 +126,10 @@ if __name__ == '__main__':
     x_test, y_test = read_file2(test_dir)
    # print(len(x_test))
     #print(len(y_test))
+    trueLables=[]
     for i in range(len(x_test)):
         item = x_test[i]
+        lableItem = y_test[i]
         temp, result_cnn = cnn_model.predict(item)
         temp1, result_rnn  = rnn_model.predict(item)
         print(result_cnn)
@@ -137,10 +139,13 @@ if __name__ == '__main__':
         labelId = np.argmax(result)
         print(labelId)
         lable = categories[labelId]
-        print(lable)
+        trueLables.append(lable==lableItem)
+        print(lable+"==="+lableItem)
+
         lables.append(lable)
     # 评估
    # print(lables)
+    print(trueLables)
     print("Precision, Recall and F1-Score...")
     print(metrics.classification_report(y_test, lables, target_names=categories))
 
