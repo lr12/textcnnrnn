@@ -1,9 +1,7 @@
 # coding: utf-8
-
 from __future__ import print_function
-import numpy as np
-import os
-import tensorflow as tf
+
+
 import tensorflow.contrib.keras as kr
 
 
@@ -16,11 +14,10 @@ import os
 import numpy as np
 import tensorflow as tf
 from sklearn import metrics
-from matplotlib import pyplot as plt
-import matplotlib
+
 
 from cnn_model import TCNNConfig, TextCNN
-from data.cnews_loader import read_vocab, read_category, open_file
+from data.cnews_loader import read_vocab, read_category, open_file,native_content
 
 
 try:
@@ -29,16 +26,18 @@ except NameError:
     unicode = str
 
 base_dir = 'data/cnews'
-vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
-train_dir = os.path.join(base_dir, 'cnews.train.txt')
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
-
+vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
 
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 save_dir1 = 'checkpoints/textrnn'
 save_path1 = os.path.join(save_dir1, 'best_validation')  # 最佳验证结果保存路径
+g1 = tf.Graph() # 加载到Session 1的graph
+g2 = tf.Graph() # 加载到Session 2的graph
 
+sess1 = tf.Session(graph=g1) # Session1
+sess2 = tf.Session(graph=g2) # Session2
 class CnnModel:
     def __init__(self):
         self.config = TCNNConfig()
@@ -47,7 +46,7 @@ class CnnModel:
         self.config.vocab_size = len(self.words)
         self.model = TextCNN(self.config)
 
-        self.session = tf.Session()
+        self.session = sess1
         self.session.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         saver.restore(sess=self.session, save_path=save_path)  # 读取保存的模型
@@ -64,7 +63,7 @@ class CnnModel:
 
         y_pred_cls = self.session.run(self.model.y_pred_cls, feed_dict=feed_dict)
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
-        return cnn_model.predict(i),pred_matrix
+        return self.categories[y_pred_cls[0]],pred_matrix
 
 class RnnModel:
     def __init__(self):
@@ -74,7 +73,7 @@ class RnnModel:
         self.config.vocab_size = len(self.words)
         self.model = TextRNN(self.config)
 
-        self.session = tf.Session()
+        self.session = sess2
         self.session.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         saver.restore(sess=self.session, save_path=save_path1)  # 读取保存的模型
@@ -94,19 +93,17 @@ class RnnModel:
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
         return self.categories[y_pred_cls[0]],pred_matrix
 
-def read_file1(filename):
+def read_file2(filename):
     """读取文件数据"""
     contents, labels = [], []
     with open_file(filename) as f:
         for line in f:
             try:
-                label, content = line.split('\t')
-                print(lable)
-                print(content)
+                label, content = line.strip().split('\t')
                 if content:
-                    # contents.append(list(jieba.cut(native_content(content))))
-                    contents.append(content)
-                    labels.append(lable)
+                    contents.append(native_content(content))
+                    #contents.append(list((native_content(content))))
+                    labels.append(native_content(label))
             except:
                 pass
     return contents, labels
@@ -114,22 +111,31 @@ def read_file1(filename):
 if __name__ == '__main__':
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
-    x_test, y_test = read_file1(test_dir)
-    cnn_model = CnnModel()
-    #rnn_model = RnnModel()
+
+    #print(x_test)
+    #print(y_test)
+
+    with sess1.as_default():
+        with g1.as_default():
+            cnn_model = CnnModel()
+
+    with sess2.as_default():  # 1
+        with g2.as_default():
+            rnn_model = RnnModel()
     lables=[]
+    x_test, y_test = read_file2(test_dir)
+   # print(len(x_test))
+    #print(len(y_test))
     for i in range(len(x_test)):
         item = x_test[i]
-        y = y_test[i]
-        _,result_cnn=cnn_model.predict(item)
-        print(result_cnn)
-      #  _y, result_rnn  = rnn_model.predict(item)
-     #   result = result_cnn + result_rnn
-        result = result_cnn
+        temp, result_cnn = cnn_model.predict(item)
+        temp1, result_rnn  = rnn_model.predict(item)
+        result = result_cnn + result_rnn
         labelId = np.argmax(result)
         lable = categories[labelId]
         lables.append(lable)
     # 评估
+   # print(lables)
     print("Precision, Recall and F1-Score...")
     print(metrics.classification_report(y_test, lables, target_names=categories))
 
