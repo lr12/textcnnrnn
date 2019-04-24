@@ -21,6 +21,11 @@ save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 save_dir1 = 'checkpoints/textrnn'
 save_path1 = os.path.join(save_dir1, 'best_validation')  # 最佳验证结果保存路径
+g1 = tf.Graph() # 加载到Session 1的graph
+g2 = tf.Graph() # 加载到Session 2的graph
+
+sess1 = tf.Session(graph=g1) # Session1
+sess2 = tf.Session(graph=g2) # Session2
 class CnnModel:
     def __init__(self):
         self.config = TCNNConfig()
@@ -29,7 +34,7 @@ class CnnModel:
         self.config.vocab_size = len(self.words)
         self.model = TextCNN(self.config)
 
-        self.session = tf.Session()
+        self.session = sess1
         self.session.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         saver.restore(sess=self.session, save_path=save_path)  # 读取保存的模型
@@ -55,7 +60,7 @@ class RnnModel:
         self.config.vocab_size = len(self.words)
         self.model = TextRNN(self.config)
 
-        self.session = tf.Session()
+        self.session = sess2
         self.session.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         saver.restore(sess=self.session, save_path=save_path1)  # 读取保存的模型
@@ -75,11 +80,16 @@ class RnnModel:
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
         return self.categories[y_pred_cls[0]],pred_matrix
 if __name__ == '__main__':
-    cnn_model = CnnModel()
+    with sess1.as_default():
+        with g1.as_default():
+              cnn_model = CnnModel()
     test_demo = ['三星ST550以全新的拍摄方式超越了以往任何一款数码相机',
                  '热火vs骑士前瞻：皇帝回乡二番战 东部次席唾手可得新浪体育讯北京时间3月30日7:00']
     for i in test_demo:
+
         print(cnn_model.predict(i))
-    rnn_model = RnnModel()
+    with sess2.as_default():  # 1
+            with g2.as_default():
+                 rnn_model = RnnModel()
     for i in test_demo:
         print(rnn_model.predict(i))
