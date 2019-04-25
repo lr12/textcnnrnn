@@ -63,7 +63,8 @@ class CnnModel:
 
         y_pred_cls = self.session.run(self.model.y_pred_cls, feed_dict=feed_dict)
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
-        return self.categories[y_pred_cls[0]],pred_matrix
+        # return self.categories[y_pred_cls[0]],pred_matrix
+        return y_pred_cls, pred_matrix
 
 class RnnModel:
     def __init__(self):
@@ -91,7 +92,8 @@ class RnnModel:
 
         y_pred_cls = self.session.run(self.model.y_pred_cls, feed_dict=feed_dict)
         pred_matrix = self.session.run(self.model.pred_matrix, feed_dict=feed_dict)
-        return self.categories[y_pred_cls[0]],pred_matrix
+        # return self.categories[y_pred_cls[0]],pred_matrix
+        return y_pred_cls, pred_matrix
 
 def read_file2(filename):
     """读取文件数据"""
@@ -128,6 +130,9 @@ if __name__ == '__main__':
     #print(len(y_test))
     trueLables=[]
     a=0.5
+    # ************************************************************
+    y_pred_labels = np.zeros(shape=len(x_test), dtype=np.int32)
+    # ************************************************************
     for i in range(len(x_test)):
         item = x_test[i]
         lableItem = y_test[i]
@@ -137,19 +142,22 @@ if __name__ == '__main__':
         #print(result_rnn)
         #result =a* result_cnn + (1-a)*result_rnn
         result =  result_cnn
-        #print(result)
-        labelId = np.argmax(result,1)
+        print(result)
+        labelId = np.argmax(result)
        # print(labelId)
         lable = categories[labelId]
-        # trueLables.append(lable==lableItem)
-        # print(lable+"==="+lableItem)
+        trueLables.append(lable==lableItem)
+        print(lable+"==="+lableItem)
 
         lables.append(lable)
+        # **************************************************
+        y_pred_labels[i] = labelId
+        # **************************************************
     # 评估
    # print(lables)
     print(trueLables)
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test, lables, target_names=categories))
+    print(metrics.classification_report(y_test, y_pred_labels, target_names=categories))
 
     # 混淆矩阵
     print("Confusion Matrix...")
