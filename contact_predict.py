@@ -133,10 +133,10 @@ if __name__ == '__main__':
         lableItem = y_test[i]
         temp, result_cnn = cnn_model.predict(item)
         temp1, result_rnn  = rnn_model.predict(item)
-        print(result_cnn)
-        print(result_rnn)
+        #print(result_cnn)
+        #print(result_rnn)
         result =a* result_cnn + (1-a)*result_rnn
-        print(result)
+        #print(result)
         labelId = np.argmax(result)
        # print(labelId)
         lable = categories[labelId]
