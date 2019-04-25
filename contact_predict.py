@@ -110,6 +110,7 @@ def read_file2(filename):
                 pass
     return contents, labels
 
+
 if __name__ == '__main__':
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
@@ -126,6 +127,7 @@ if __name__ == '__main__':
             rnn_model = RnnModel()
     lables=[]
     x_test, y_test = read_file2(test_dir)
+
     data_id, label_id = [], []
     for i in range(len(y_test)):
         label_id.append(cat_to_id[y_test[i]])
@@ -142,6 +144,8 @@ if __name__ == '__main__':
         lableItem = y_test[i]
         temp, result_cnn = cnn_model.predict(item)
         temp1, result_rnn  = rnn_model.predict(item)
+
+        print(temp)
         #print(result_cnn)
         #print(result_rnn)
         #result =a* result_cnn + (1-a)*result_rnn
