@@ -51,7 +51,7 @@ def read_file(filename):
                    # contents.append(list(native_content(content)))
                     listWords=list(native_content(content))
 
-                    waste = set("调","解","维","持","撤","诉","移","送","驳","回","起","立","案")
+                    waste = set(["调","解","维","持","撤","诉","移","送","驳","回","起","立","案"])
 
                     for item in listWords:
                         if item in waste:
@@ -60,8 +60,8 @@ def read_file(filename):
                     contents.append(listWords)
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
-            except:
-                pass
+            except BaseException as e:
+                raise e
     return contents, labels
 
 
