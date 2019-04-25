@@ -138,7 +138,7 @@ if __name__ == '__main__':
         #result =a* result_cnn + (1-a)*result_rnn
         result =  result_cnn
         #print(result)
-        labelId = np.argmax(result)
+        labelId = np.argmax(temp,1)
        # print(labelId)
         lable = categories[labelId]
         # trueLables.append(lable==lableItem)
