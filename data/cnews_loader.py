@@ -60,8 +60,10 @@ def read_file(filename):
                     contents.append(listWords)
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
-            except BaseException as e:
-                raise e
+            except:
+                pass
+
+
     return contents, labels
 
 
