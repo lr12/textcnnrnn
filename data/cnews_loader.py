@@ -48,7 +48,12 @@ def read_file(filename):
             try:
                 label, content = line.strip().split('\t')
                 if content:
-                    contents.append(list(jieba.cut(native_content(content))))
+                   # contents.append(list(native_content(content)))
+                    listWords=list(native_content(content))
+
+                    waste = set("调","解","维","持","撤","诉","移","送","驳","回","起","立","案")
+                    listWords = list(filter(lambda x: x not in waste, listWords))
+                    contents.append(listWords)
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
             except:
