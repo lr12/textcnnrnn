@@ -127,6 +127,7 @@ if __name__ == '__main__':
    # print(len(x_test))
     #print(len(y_test))
     trueLables=[]
+    a=0.6
     for i in range(len(x_test)):
         item = x_test[i]
         lableItem = y_test[i]
@@ -134,13 +135,13 @@ if __name__ == '__main__':
         temp1, result_rnn  = rnn_model.predict(item)
         print(result_cnn)
         print(result_rnn)
-        result = result_cnn + result_rnn
+        result =a* result_cnn + (1-a)*result_rnn
         print(result)
         labelId = np.argmax(result)
-        print(labelId)
+       # print(labelId)
         lable = categories[labelId]
-        trueLables.append(lable==lableItem)
-        print(lable+"==="+lableItem)
+        # trueLables.append(lable==lableItem)
+        # print(lable+"==="+lableItem)
 
         lables.append(lable)
     # 评估
