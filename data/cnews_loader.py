@@ -52,7 +52,11 @@ def read_file(filename):
                     listWords=list(native_content(content))
 
                     waste = set("调","解","维","持","撤","诉","移","送","驳","回","起","立","案")
-                    listWords = list(filter(lambda x: x not in waste, listWords))
+
+                    for item in listWords:
+                        if item in waste:
+                            listWords.remove(item)
+                    print(listWords)
                     contents.append(listWords)
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
