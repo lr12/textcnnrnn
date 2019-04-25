@@ -56,7 +56,7 @@ def read_file(filename):
                     for item in listWords:
                         if item in waste:
                             listWords.remove(item)
-                    print(listWords)
+                    #print(listWords)
                     contents.append(listWords)
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
