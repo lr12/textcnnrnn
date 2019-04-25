@@ -48,7 +48,7 @@ def read_file(filename):
             try:
                 label, content = line.strip().split('\t')
                 if content:
-                    contents.append(list(native_content(content)))
+                    contents.append(list(jieba.cut(native_content(content))))
                     #contents.append(list((native_content(content))))
                     labels.append(native_content(label))
             except:
