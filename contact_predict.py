@@ -126,8 +126,12 @@ if __name__ == '__main__':
             rnn_model = RnnModel()
     lables=[]
     x_test, y_test = read_file2(test_dir)
-   # print(len(x_test))
-    #print(len(y_test))
+    data_id, label_id = [], []
+    for i in range(len(y_test)):
+        label_id.append(cat_to_id[y_test[i]])
+
+    y_pad = kr.utils.to_categorical(label_id, num_classes=len(cat_to_id))
+    y_test_cls = np.argmax(y_pad, 1)
     trueLables=[]
     a=0.5
     # ************************************************************
@@ -157,12 +161,12 @@ if __name__ == '__main__':
    # print(lables)
     print(trueLables)
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test, y_pred_labels, target_names=categories))
+    print(metrics.classification_report(y_test_cls, y_pred_labels, target_names=categories))
 
     # 混淆矩阵
     print("Confusion Matrix...")
 
-    cm = metrics.confusion_matrix(y_test, lables)
+    cm = metrics.confusion_matrix(y_test_cls, y_pred_labels)
     print(cm)
 
 
