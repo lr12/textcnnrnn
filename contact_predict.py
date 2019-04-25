@@ -145,17 +145,17 @@ if __name__ == '__main__':
         temp, result_cnn = cnn_model.predict(item)
         temp1, result_rnn  = rnn_model.predict(item)
 
-        print(temp)
+       # print(temp)
         #print(result_cnn)
         #print(result_rnn)
-        #result =a* result_cnn + (1-a)*result_rnn
-        result =  result_cnn
-        print(result)
+        result =a* result_cnn + (1-a)*result_rnn
+        #result =  result_cnn
+     #   print(result)
         labelId = np.argmax(result)
        # print(labelId)
         lable = categories[labelId]
         trueLables.append(lable==lableItem)
-        print(lable+"==="+lableItem)
+       # print(lable+"==="+lableItem)
 
         lables.append(lable)
         # **************************************************
