@@ -148,7 +148,7 @@ if __name__ == '__main__':
        # print(temp)
         #print(result_cnn)
         #print(result_rnn)
-        result =a* result_cnn + (1-a)*result_rnn
+        result =result_cnn + result_rnn
         #result =  result_cnn
      #   print(result)
         labelId = np.argmax(result)
