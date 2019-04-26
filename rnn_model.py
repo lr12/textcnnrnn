@@ -7,7 +7,7 @@ class TRNNConfig(object):
     """RNN配置参数"""
 
     # 模型参数
-    embedding_dim = 128      # 词向量维度
+    embedding_dim = 360      # 词向量维度
     seq_length = 600        # 序列长度
     num_classes = 7        # 类别数
     vocab_size = 5000       # 词汇表达小
@@ -20,7 +20,7 @@ class TRNNConfig(object):
     learning_rate = 1e-3    # 学习率
 
     batch_size = 256        # 每批训练大小
-    num_epochs = 2          # 总迭代轮次
+    num_epochs = 10          # 总迭代轮次
 
     print_per_batch = 20    # 每多少轮输出一次结果
     save_per_batch = 10      # 每多少轮存入tensorboard
