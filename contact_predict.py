@@ -26,15 +26,15 @@ except NameError:
     unicode = str
 
 #base_dir = 'data/cnews'
-#base_dir = 'data/ay'
-base_dir = 'data/xz'
+base_dir = 'data/ay'
+#base_dir = 'data/xz'
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
-#save_dir = 'checkpoints/textcnn/ay'
-save_dir = 'checkpoints/textcnn/xz'
+save_dir = 'checkpoints/textcnn/ay'
+#save_dir = 'checkpoints/textcnn/xz'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
-#save_dir1 =  'checkpoints/textrnn/ay'
-save_dir1 =  'checkpoints/textrnn/xz'
+save_dir1 =  'checkpoints/textrnn/ay'
+#save_dir1 =  'checkpoints/textrnn/xz'
 save_path1 = os.path.join(save_dir1, 'best_validation')  # 最佳验证结果保存路径
 g1 = tf.Graph() # 加载到Session 1的graph
 g2 = tf.Graph() # 加载到Session 2的graph
