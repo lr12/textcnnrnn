@@ -17,14 +17,16 @@ import matplotlib
 from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
-base_dir = 'data/cnews'
-#base_dir = 'data/xz'
+#base_dir = 'data/cnews'
+#base_dir = 'data/ay'
+base_dir = 'data/xz'
 train_dir = os.path.join(base_dir, 'cnews.train.txt')
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
 val_dir = os.path.join(base_dir, 'cnews.val.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
 #save_dir = 'checkpoints/textcnn'
 save_dir = 'checkpoints/textcnn/xz'
+#save_dir = 'checkpoints/textcnn/ay'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 
 xx=[]

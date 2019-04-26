@@ -86,7 +86,8 @@ def read_vocab(vocab_dir):
 
 def read_category():
     """读取分类目录，固定"""
-    categories =  ['裁定移送其他法院','准予撤回上诉','维持','调解','驳回起诉','按撤诉处理','不予立案']
+    #categories =  ['裁定移送其他法院','准予撤回上诉','维持','调解','驳回起诉','按撤诉处理','不予立案']
+    categories = [ '按撤诉处理', '驳回起诉','不予立案','裁定移送其他法院','判决','准予撤回']
 
     categories = [native_content(x) for x in categories]
 
