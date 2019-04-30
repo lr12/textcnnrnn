@@ -28,7 +28,7 @@ class TCNNConfig(object):
 class TextCNN(object):
     """文本分类，CNN模型"""
 
-    def __init__(self, config,batchSize):
+    def __init__(self, config,batchSize=256):
         self.config = config
         self.config.batch_size=batchSize
         # 三个待输入的数据
