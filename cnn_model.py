@@ -28,10 +28,10 @@ class TCNNConfig(object):
 class TextCNN(object):
     """文本分类，CNN模型"""
 
-    def __init__(self, config,num_epochs=10):
+    def __init__(self, config,num_epochs=10,batch_size=256):
         self.config = config
-        #self.config.batch_size=batchSize
-        self.config.num_epochs=num_epochs
+        self.config.batch_size=batch_size
+        #self.config.num_epochs=num_epochs
         # 三个待输入的数据
         self.input_x = tf.placeholder(tf.int32, [None, self.config.seq_length], name='input_x')
         self.input_y = tf.placeholder(tf.float32, [None, self.config.num_classes], name='input_y')
