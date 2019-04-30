@@ -8,7 +8,7 @@ class TCNNConfig(object):
 
     embedding_dim = 240  # 词向量维度
     seq_length = 600  # 序列长度
-    num_classes = 7 # 类别数
+    num_classes = 6 # 类别数
     num_filters = 200  # 卷积核数目
     kernel_size = 5  # 卷积核尺寸
     vocab_size = 5000  # 词汇表达小
@@ -28,9 +28,10 @@ class TCNNConfig(object):
 class TextCNN(object):
     """文本分类，CNN模型"""
 
-    def __init__(self, config,batchSize=256):
+    def __init__(self, config,num_epochs=10):
         self.config = config
-        self.config.batch_size=batchSize
+        #self.config.batch_size=batchSize
+        self.config.num_epochs=num_epochs
         # 三个待输入的数据
         self.input_x = tf.placeholder(tf.int32, [None, self.config.seq_length], name='input_x')
         self.input_y = tf.placeholder(tf.float32, [None, self.config.num_classes], name='input_y')

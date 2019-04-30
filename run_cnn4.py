@@ -213,7 +213,7 @@ if __name__ == '__main__':
         words, word_to_id = read_vocab(vocab_dir)
         config.vocab_size = len(words)
 
-        model = TextCNN(config,num_epochs=1)
+        model = TextCNN(config,num_epochs=4)
         train()
         test()
         plt.plot(xx, yy1)

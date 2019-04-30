@@ -187,12 +187,11 @@ def test():
 
     # 评估
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
+    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories, digits=4))
 
     # 混淆矩阵
     print("Confusion Matrix...")
-    print(y_test_cls)
-    print(y_pred_cls)
+
     cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
     print(cm)
 
@@ -212,22 +211,28 @@ if __name__ == '__main__':
         categories, cat_to_id = read_category()
         words, word_to_id = read_vocab(vocab_dir)
         config.vocab_size = len(words)
-
-        model = TextCNN(config,num_epochs=1)
-        train()
-        test()
-        plt.plot(xx, yy1)
-        plt.title('train loss')
-        plt.show()
-        plt.plot(xx, yy_train)
-        plt.title('train Acc')
-        plt.show()
-        plt.plot(xx, yy2)
-        plt.title('val Loss')
-        plt.show()
-        plt.plot(xx, yy_val)
-        plt.title('val Acc')
-        plt.show()
+        for i in range(11):
+           if i==0:
+             continue
+           g1 = tf.Graph()
+           sess1 = tf.Session(graph=g1)
+           with sess1.as_default():
+              with g1.as_default():
+                model = TextCNN(config, num_epochs=i)
+                train()
+                test()
+                plt.plot(xx, yy1)
+                plt.title('train loss')
+                plt.show()
+                plt.plot(xx, yy_train)
+                plt.title('train Acc')
+                plt.show()
+                plt.plot(xx, yy2)
+                plt.title('val Loss')
+                plt.show()
+                plt.plot(xx, yy_val)
+                plt.title('val Acc')
+                plt.show()
     # if sys.argv[1] == 'train':
     #     train()
     # else:
