@@ -18,19 +18,19 @@ class TCNNConfig(object):
     dropout_keep_prob = 0.5  # dropout保留比例
     learning_rate = 1e-3  # 学习率
 
-    batch_size = 128  # 每批训练大小
+    batch_size = 256  # 每批训练大小
     num_epochs = 10 # 总迭代轮次
 
-    print_per_batch = 20   # 每多少轮输出一次结果
+    print_per_batch = 100   # 每多少轮输出一次结果
     save_per_batch = 5  # 每多少轮存入tensorboard
 
 
 class TextCNN(object):
     """文本分类，CNN模型"""
 
-    def __init__(self, config):
+    def __init__(self, config,batchSize):
         self.config = config
-
+        self.config.batch_size=batchSize
         # 三个待输入的数据
         self.input_x = tf.placeholder(tf.int32, [None, self.config.seq_length], name='input_x')
         self.input_y = tf.placeholder(tf.float32, [None, self.config.num_classes], name='input_y')

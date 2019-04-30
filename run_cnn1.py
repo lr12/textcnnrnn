@@ -1,4 +1,5 @@
-# coding: utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
@@ -10,23 +11,31 @@ from datetime import timedelta
 import numpy as np
 import tensorflow as tf
 from sklearn import metrics
+from matplotlib import pyplot as plt 
+import matplotlib
 
-from rnn_model import TRNNConfig, TextRNN
+from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
-base_dir = 'data/cnews'
-#base_dir = 'data/xz'
+#base_dir = 'data/cnews'
 #base_dir = 'data/ay'
+base_dir = 'data/xz'
 train_dir = os.path.join(base_dir, 'cnews.train.txt')
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
 val_dir = os.path.join(base_dir, 'cnews.val.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
-
-save_dir = 'checkpoints/textrnn'
-#save_dir = 'checkpoints/textrnn/xz'
-#save_dir = 'checkpoints/textrnn/ay'
+#save_dir = 'checkpoints/textcnn'
+save_dir = 'checkpoints/textcnn/xz'
+#save_dir = 'checkpoints/textcnn/ay'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 
+xx=[]
+yy1=[]
+yy2=[]
+yy3=[]
+yy4=[]
+yy_train=[]
+yy_val=[]
 
 def get_time_dif(start_time):
     """获取已使用时间"""
@@ -63,7 +72,7 @@ def evaluate(sess, x_, y_):
 def train():
     print("Configuring TensorBoard and Saver...")
     # 配置 Tensorboard，重新训练时，请将tensorboard文件夹删除，不然图会覆盖
-    tensorboard_dir = 'tensorboard/textrnn'
+    tensorboard_dir = 'tensorboard/textcnn'
     if not os.path.exists(tensorboard_dir):
         os.makedirs(tensorboard_dir)
 
@@ -114,6 +123,11 @@ def train():
                 feed_dict[model.keep_prob] = 1.0
                 loss_train, acc_train = session.run([model.loss, model.acc], feed_dict=feed_dict)
                 loss_val, acc_val = evaluate(session, x_val, y_val)  # todo
+                xx.append(total_batch)
+                yy_train.append(acc_train)
+                yy_val.append(acc_val)
+                yy1.append(loss_train)
+                yy2.append(loss_val)
 
                 if acc_val > best_acc_val:
                     # 保存最好结果
@@ -177,6 +191,8 @@ def test():
 
     # 混淆矩阵
     print("Confusion Matrix...")
+    print(y_test_cls)
+    print(y_pred_cls)
     cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
     print(cm)
 
@@ -186,18 +202,31 @@ def test():
 
 if __name__ == '__main__':
     # if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
-    #     raise ValueError("""usage: python run_rnn.py [train / test]""")
-
-    print('Configuring RNN model...')
-    config = TRNNConfig()
-    if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
-        build_vocab(train_dir, vocab_dir, config.vocab_size)
-    categories, cat_to_id = read_category()
-    words, word_to_id = read_vocab(vocab_dir)
-    config.vocab_size = len(words)
-    model = TextRNN(config)
-    train()
-    test()
+    #     raise ValueError("""usage: python run_cnn.py [train / test]""")
+    dataNums=[16,32,64,128,256]
+    for batchSize in dataNums:
+        print('Configuring CNN model...')
+        config = TCNNConfig()
+        if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+            build_vocab(train_dir, vocab_dir, config.vocab_size)
+        categories, cat_to_id = read_category()
+        words, word_to_id = read_vocab(vocab_dir)
+        config.vocab_size = len(words)
+        model = TextCNN(config,batchSize)
+        train()
+        test()
+        plt.plot(xx, yy1)
+        plt.title('train loss')
+        plt.show()
+        plt.plot(xx, yy_train)
+        plt.title('train Acc')
+        plt.show()
+        plt.plot(xx, yy2)
+        plt.title('val Loss')
+        plt.show()
+        plt.plot(xx, yy_val)
+        plt.title('val Acc')
+        plt.show()
     # if sys.argv[1] == 'train':
     #     train()
     # else:
