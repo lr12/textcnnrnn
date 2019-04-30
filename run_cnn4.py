@@ -211,7 +211,7 @@ if __name__ == '__main__':
     categories, cat_to_id = read_category()
     words, word_to_id = read_vocab(vocab_dir)
     config.vocab_size = len(words)
-    dataNums=[4,8,32,64,128,256]
+    dataNums=[4,8,16,32,64,128,256]
     for i in dataNums:
         if i == 0:
             continue
