@@ -168,7 +168,7 @@ if __name__ == '__main__':
    # print(lables)
     print(trueLables)
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_labels, target_names=categories))
+    print(metrics.classification_report(y_test_cls, y_pred_labels, target_names=categories ,digits=4))
 
     # 混淆矩阵
     print("Confusion Matrix...")

@@ -187,12 +187,12 @@ def test():
 
     # 评估
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
+    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories ,digits=4))
 
     # 混淆矩阵
     print("Confusion Matrix...")
-    print(y_test_cls)
-    print(y_pred_cls)
+    #print(y_test_cls)
+    #print(y_pred_cls)
     cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
     print(cm)
 
