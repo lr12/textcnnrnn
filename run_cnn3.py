@@ -17,15 +17,15 @@ import matplotlib
 from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
-#base_dir = 'data/cnews'
+base_dir = 'data/cnews'
 #base_dir = 'data/ay'
-base_dir = 'data/xz'
+#base_dir = 'data/xz'
 train_dir = os.path.join(base_dir, 'cnews.train.txt')
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
 val_dir = os.path.join(base_dir, 'cnews.val.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
-#save_dir = 'checkpoints/textcnn'
-save_dir = 'checkpoints/textcnn/xz'
+save_dir = 'checkpoints/textcnn'
+#save_dir = 'checkpoints/textcnn/xz'
 #save_dir = 'checkpoints/textcnn/ay'
 save_path = os.path.join(save_dir, 'best_validation')  # 最佳验证结果保存路径
 
@@ -204,31 +204,32 @@ if __name__ == '__main__':
     # if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
     #     raise ValueError("""usage: python run_cnn.py [train / test]""")
 
-
-        print('Configuring CNN model...')
-        config = TCNNConfig()
-        if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
-            build_vocab(train_dir, vocab_dir, config.vocab_size)
-        categories, cat_to_id = read_category()
-        words, word_to_id = read_vocab(vocab_dir)
-        config.vocab_size = len(words)
-
-        model = TextCNN(config,num_epochs=3)
-        train()
-        test()
-        plt.plot(xx, yy1)
-        plt.title('train loss')
-        plt.show()
-        plt.plot(xx, yy_train)
-        plt.title('train Acc')
-        plt.show()
-        plt.plot(xx, yy2)
-        plt.title('val Loss')
-        plt.show()
-        plt.plot(xx, yy_val)
-        plt.title('val Acc')
-        plt.show()
-    # if sys.argv[1] == 'train':
-    #     train()
-    # else:
-    #     test()
+    print('Configuring CNN model...')
+    config = TCNNConfig()
+    if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+        build_vocab(train_dir, vocab_dir, config.vocab_size)
+    categories, cat_to_id = read_category()
+    words, word_to_id = read_vocab(vocab_dir)
+    config.vocab_size = len(words)
+    for i in range(11):
+        if i == 0:
+            continue
+        g1 = tf.Graph()
+        sess1 = tf.Session(graph=g1)
+        with sess1.as_default():
+            with g1.as_default():
+                model = TextCNN(config, num_epochs=i)
+                train()
+                test()
+                plt.plot(xx, yy1)
+                plt.title('train loss')
+                plt.show()
+                plt.plot(xx, yy_train)
+                plt.title('train Acc')
+                plt.show()
+                plt.plot(xx, yy2)
+                plt.title('val Loss')
+                plt.show()
+                plt.plot(xx, yy_val)
+                plt.title('val Acc')
+                plt.show()
