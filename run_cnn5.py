@@ -187,7 +187,7 @@ def test():
 
     # 评估
     print("Precision, Recall and F1-Score...")
-    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories))
+    print(metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories, digits=4))
 
     # 混淆矩阵
     print("Confusion Matrix...")
@@ -204,31 +204,33 @@ if __name__ == '__main__':
     # if len(sys.argv) != 2 or sys.argv[1] not in ['train', 'test']:
     #     raise ValueError("""usage: python run_cnn.py [train / test]""")
 
-
-        print('Configuring CNN model...')
-        config = TCNNConfig()
-        if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
-            build_vocab(train_dir, vocab_dir, config.vocab_size)
-        categories, cat_to_id = read_category()
-        words, word_to_id = read_vocab(vocab_dir)
-        config.vocab_size = len(words)
-
-        model = TextCNN(config,num_epochs=5)
-        train()
-        test()
-        plt.plot(xx, yy1)
-        plt.title('train loss')
-        plt.show()
-        plt.plot(xx, yy_train)
-        plt.title('train Acc')
-        plt.show()
-        plt.plot(xx, yy2)
-        plt.title('val Loss')
-        plt.show()
-        plt.plot(xx, yy_val)
-        plt.title('val Acc')
-        plt.show()
-    # if sys.argv[1] == 'train':
-    #     train()
-    # else:
-    #     test()
+    print('Configuring CNN model...')
+    config = TCNNConfig()
+    if not os.path.exists(vocab_dir):  # 如果不存在词汇表，重建
+        build_vocab(train_dir, vocab_dir, config.vocab_size)
+    categories, cat_to_id = read_category()
+    words, word_to_id = read_vocab(vocab_dir)
+    config.vocab_size = len(wordas)
+    dataNums=[16,32,64,128,256]
+    for i in dataNums:
+        if i == 0:
+            continue
+        g1 = tf.Graph()
+        sess1 = tf.Session(graph=g1)
+        with sess1.as_default():
+            with g1.as_default():
+                model = TextCNN(config, batch_size=i)
+                train()
+                test()
+                plt.plot(xx, yy1)
+                plt.title('train loss')
+                plt.show()
+                plt.plot(xx, yy_train)
+                plt.title('train Acc')
+                plt.show()
+                plt.plot(xx, yy2)
+                plt.title('val Loss')
+                plt.show()
+                plt.plot(xx, yy_val)
+                plt.title('val Acc')
+                plt.show()
