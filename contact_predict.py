@@ -25,8 +25,8 @@ try:
 except NameError:
     unicode = str
 
-base_dir = 'data/cnews'
-#base_dir = 'data/ay'
+#base_dir = 'data/cnews'
+base_dir = 'data/xs'
 #base_dir = 'data/xz'
 test_dir = os.path.join(base_dir, 'cnews.test.txt')
 vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
